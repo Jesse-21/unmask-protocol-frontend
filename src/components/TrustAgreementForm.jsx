@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -15,7 +14,7 @@ import {
   UserCheck,
   Calendar,
   Info,
-  IdCard
+  CreditCard
 } from 'lucide-react';
 import { 
   Card, 
@@ -53,40 +52,29 @@ const TrustAgreementForm = () => {
     verificationDate: ''
   });
   
-  // For name input in the signature section
   const [nameInput, setNameInput] = useState('');
   const [signatureName, setSignatureName] = useState('');
   const [signatureDate, setSignatureDate] = useState('');
 
-  // Signature pad reference
   const signaturePad = useRef(null);
 
-  // Generate a random control number for the agreement
   const generateControlNumber = () => {
     const timestamp = new Date().getTime().toString().slice(-8);
     const random = Math.random().toString(36).substring(2, 8).toUpperCase();
     return `AGR-${timestamp}-${random}`;
   };
 
-  // Truncate long text
   const truncateText = (text, length) => {
     if (!text) return '';
     return text.length > length ? text.substring(0, length) + "..." : text;
   };
 
-  // Initialize component
   useEffect(() => {
-    // Generate control number when component mounts
     setControlNumber(generateControlNumber());
     
-    // In a real application, we would fetch identity data from previous steps
-    // For now, we'll simulate this data
-    
-    // Fetch identity verification data from location state (or API in a real app)
     if (location.state && location.state.identityData) {
       setUserIdentityInfo(location.state.identityData);
     } else {
-      // Fallback mock data for demonstration
       setUserIdentityInfo({
         fullName: 'John Doe',
         idType: 'Passport',
@@ -99,11 +87,9 @@ const TrustAgreementForm = () => {
       });
     }
     
-    // Get RugID from location state if available
     if (location.state && location.state.rugId) {
       setRugId(location.state.rugId);
     } else {
-      // Fallback mock RugID for demonstration
       setRugId('RID-AB12CD34EF56');
     }
   }, [location]);
@@ -147,19 +133,12 @@ const TrustAgreementForm = () => {
     setIsSubmitting(true);
     
     try {
-      // In a real app, you would:
-      // 1. Generate a PDF of the signed agreement
-      // 2. Store it securely
-      // 3. Associate it with the user's RugID
-      
-      // Simulate API request
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       toast.success('Trust Agreement successfully submitted!', {
         description: `Your RugID (${rugId}) has been finalized and is now active.`
       });
       
-      // Navigate to success page or dashboard
       navigate('/');
     } catch (error) {
       console.error('Error submitting agreement:', error);
@@ -170,11 +149,9 @@ const TrustAgreementForm = () => {
   };
 
   const handleDownloadAgreement = () => {
-    // In a real app, this would generate and download a PDF
     toast.info('This would download the agreement as a PDF in a production environment');
   };
 
-  // The updated trust agreement text with placeholders for variables
   const trustAgreementText = `
 **RugDox LLC User Agreement**
 
@@ -278,10 +255,9 @@ Date: ${signatureDate || '_________________________'}
       
       <form onSubmit={handleSubmit}>
         <CardContent className="pt-6 space-y-6">
-          {/* Identity Verification Data Box */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <IdCard className="h-5 w-5 text-primary" />
+              <CreditCard className="h-5 w-5 text-primary" />
               <Label className="text-lg">Identity Verification Record</Label>
               <Badge variant="outline" className="ml-auto">Verified</Badge>
             </div>
@@ -322,7 +298,6 @@ Date: ${signatureDate || '_________________________'}
             </div>
           </div>
           
-          {/* Agreement Text Display */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <Label className="text-lg">Agreement Terms</Label>
@@ -343,7 +318,6 @@ Date: ${signatureDate || '_________________________'}
             </ScrollArea>
           </div>
           
-          {/* User Identity Information Box */}
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Info className="h-5 w-5 text-primary" />
@@ -378,7 +352,6 @@ Date: ${signatureDate || '_________________________'}
             </div>
           </div>
           
-          {/* Signature Pad */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Fingerprint className="h-5 w-5 text-primary" />
@@ -434,7 +407,6 @@ Date: ${signatureDate || '_________________________'}
             </div>
           </div>
           
-          {/* Final Agreement Details - shown when signed */}
           {agreementSigned && (
             <div className="border-t pt-4 space-y-3">
               <div className="flex items-center gap-2">
@@ -462,7 +434,6 @@ Date: ${signatureDate || '_________________________'}
             </div>
           )}
           
-          {/* Confirmation Checkbox */}
           <div className="flex items-start space-x-2 pt-4 border-t">
             <Checkbox 
               id="agreement-confirmation" 
@@ -477,7 +448,6 @@ Date: ${signatureDate || '_________________________'}
             </Label>
           </div>
           
-          {/* Success Alert - shown when agreement is signed */}
           {agreementSigned && (
             <Alert className="bg-green-100 border-green-200">
               <Check className="h-4 w-4 text-green-600" />
