@@ -24,6 +24,11 @@ export default defineConfig({
       },
     },
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'es2020',
+    },
+  },
   plugins: [react()],
   resolve: {
     alias: [
