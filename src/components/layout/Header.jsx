@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';
@@ -16,7 +15,7 @@ const Header = () => {
       <div className="flex flex-col items-center">
         <Link to="/" aria-label="Unmask Protocol">
           <img 
-            src="/unmask-logo-main.png" 
+            src="/public/unmask-logo-main.png" 
             alt="Unmask Protocol Logo" 
             className="h-24 w-auto object-contain"
           />
