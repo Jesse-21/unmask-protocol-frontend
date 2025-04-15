@@ -15,10 +15,6 @@ const renderApp = () => {
   }
   
   try {
-    // Check if loading screen has already been removed by the HTML timeout
-    const loadingScreen = document.getElementById('loading-screen');
-    const isLoadingScreenVisible = loadingScreen && window.getComputedStyle(loadingScreen).display !== 'none';
-    
     ReactDOM.createRoot(rootElement).render(
       <React.StrictMode>
         <BrowserRouter>
@@ -27,12 +23,10 @@ const renderApp = () => {
       </React.StrictMode>
     );
     
-    // Remove loading screen if still visible
-    if (isLoadingScreenVisible && loadingScreen && typeof window.removeLoadingScreen === 'function') {
+    // Directly remove loading screen after React is rendered
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
       console.log("React app rendered, removing loading screen");
-      window.removeLoadingScreen();
-    } else if (isLoadingScreenVisible && loadingScreen) {
-      console.log("React app rendered, removing loading screen directly");
       loadingScreen.style.opacity = '0';
       loadingScreen.style.transition = 'opacity 0.3s ease';
       
@@ -60,19 +54,6 @@ const renderApp = () => {
     if (loadingScreen) {
       loadingScreen.style.display = 'none';
     }
-  }
-};
-
-// Expose loading screen removal function globally
-window.removeLoadingScreen = function() {
-  const loadingScreen = document.getElementById('loading-screen');
-  if (loadingScreen) {
-    loadingScreen.style.opacity = '0';
-    loadingScreen.style.transition = 'opacity 0.3s ease';
-    
-    setTimeout(() => {
-      loadingScreen.style.display = 'none';
-    }, 300);
   }
 };
 

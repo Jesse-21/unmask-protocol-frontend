@@ -53,7 +53,7 @@
     <div id="loading-screen">
       <img 
         id="loading-logo" 
-        src="/unmask-icon.png" 
+        src="/public/unmask-icon.png" 
         alt="Unmask Protocol Logo"
         onError="this.onerror=null; console.error('Loading logo failed to load'); this.src='/placeholder.svg';"
       />
@@ -61,38 +61,6 @@
     </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-      // Better coordination between different loading screen removal mechanisms
-      let loadingScreenRemoved = false;
-      
-      function removeLoadingScreen() {
-        if (loadingScreenRemoved) return;
-        
-        const loadingScreen = document.getElementById('loading-screen');
-        if (loadingScreen) {
-          console.log('Removing loading screen');
-          loadingScreen.style.opacity = '0';
-          loadingScreen.style.transition = 'opacity 0.3s ease';
-          
-          setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            loadingScreenRemoved = true;
-          }, 300);
-        }
-      }
-      
-      // Remove on window load
-      window.addEventListener('load', function() {
-        setTimeout(removeLoadingScreen, 800);
-      });
-      
-      // Fallback timeout
-      setTimeout(function() {
-        if (!loadingScreenRemoved) {
-          console.log('Maximum timeout: Forcing loading screen removal');
-          removeLoadingScreen();
-        }
-      }, 5000);
-    </script>
+    <!-- Removed the redundant loading screen handling script here -->
   </body>
 </html>
