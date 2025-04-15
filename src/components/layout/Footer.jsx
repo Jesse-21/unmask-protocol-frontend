@@ -9,9 +9,13 @@ const Footer = () => {
         <div>
           <div className="flex items-center gap-2 mb-4">
             <img 
-              src="/unmask-logo-main.png" 
+              src="/public/unmask-logo-main.png" 
               alt="Unmask Protocol Logo" 
               className="h-8 w-auto object-contain"
+              onError={(e) => {
+                console.error("Footer logo failed to load:", e);
+                e.target.src = "/placeholder.svg";
+              }}
             />
           </div>
           <p className="text-gray-400 mb-4">

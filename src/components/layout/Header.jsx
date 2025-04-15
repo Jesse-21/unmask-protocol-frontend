@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';
@@ -18,6 +19,10 @@ const Header = () => {
             src="/public/unmask-logo-main.png" 
             alt="Unmask Protocol Logo" 
             className="h-24 w-auto object-contain"
+            onError={(e) => {
+              console.error("Header logo failed to load:", e);
+              e.target.src = "/placeholder.svg";
+            }}
           />
         </Link>
       </div>
