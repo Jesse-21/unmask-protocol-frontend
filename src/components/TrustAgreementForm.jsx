@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -14,7 +15,8 @@ import {
   UserCheck,
   Calendar,
   Info,
-  CreditCard
+  CreditCard,
+  User // Replacing IdCard with User icon
 } from 'lucide-react';
 import { 
   Card, 
