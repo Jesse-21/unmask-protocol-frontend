@@ -6,12 +6,12 @@ const StepCard = ({ number, title, description, icon }) => (
     <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-800 border border-blue-500/20 overflow-hidden">
       {icon || (
         <img 
-          src="/unmask-seal.png" 
+          src="/public/unmask-seal.png" 
           alt="Unmask Seal" 
           className="h-10 w-10 object-contain"
           onError={(e) => {
             console.error("Seal image failed to load:", e);
-            e.target.src = "/unmask-icon.png"; // Fallback image
+            e.target.src = "/public/unmask-icon.png"; // Fallback image
           }}
         />
       )}
