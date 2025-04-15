@@ -29,6 +29,10 @@ export default defineConfig({
       target: 'es2020',
     },
   },
+  // Set target to a more compatible level
+  build: {
+    target: ['es2015', 'edge88', 'firefox78', 'chrome87', 'safari13'],
+  },
   plugins: [react()],
   resolve: {
     alias: [
