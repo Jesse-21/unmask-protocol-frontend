@@ -1,11 +1,10 @@
 
-import { fileURLToPath, URL } from "url";
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { resolve } from "path";
+const { resolve } = require("path");
+const { defineConfig } = require("vite");
+const react = require("@vitejs/plugin-react");
 
 // https://vitejs.dev/config/
-export default defineConfig({
+module.exports = defineConfig({
   server: {
     host: "::",
     port: "8080",
@@ -23,22 +22,19 @@ export default defineConfig({
         },
       },
     },
+    target: ['es2015', 'edge88', 'firefox78', 'chrome87', 'safari13'],
   },
   optimizeDeps: {
     esbuildOptions: {
       target: 'es2020',
     },
   },
-  // Set target to a more compatible level
-  build: {
-    target: ['es2015', 'edge88', 'firefox78', 'chrome87', 'safari13'],
-  },
   plugins: [react()],
   resolve: {
     alias: [
       {
         find: "@",
-        replacement: fileURLToPath(new URL("./src", import.meta.url)),
+        replacement: resolve(__dirname, "./src"),
       },
       {
         find: "lib",
