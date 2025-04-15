@@ -1,18 +1,10 @@
 
 import React from 'react';
 
-const StepCard = ({ number, title, description }) => (
+const StepCard = ({ number, title, description, icon }) => (
   <div className="flex gap-4 p-4 rounded-lg border border-blue-500/10 bg-gray-900/40 hover:bg-gray-900/60 transition-all duration-300">
     <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-800 border border-blue-500/20 overflow-hidden">
-      <img 
-        src="/unmask-seal.PNG" 
-        alt="Unmask Seal" 
-        className="h-10 w-10 object-contain"
-        onError={(e) => {
-          console.error("Seal image failed to load:", e);
-          e.target.src = "/unmask-icon.png"; // Fallback image
-        }}
-      />
+      {icon}
     </div>
     <div>
       <div className="flex items-center gap-2 mb-1">
