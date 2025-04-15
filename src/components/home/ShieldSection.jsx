@@ -16,12 +16,12 @@ const ShieldSection = () => (
       <div className="w-full md:w-1/3 order-1 md:order-2 flex justify-center">
         <div className="pulse-subtle">
           <img 
-            src="/public/protected.png" 
+            src="/protected.png" 
             alt="Protection Shield" 
             className="h-36 w-auto" 
             onError={(e) => {
               console.error("Shield image failed to load:", e);
-              e.target.src = "/public/unmask-icon.png"; // Fallback image
+              e.target.src = "/unmask-icon.png"; // Fallback image
             }}
           />
         </div>
