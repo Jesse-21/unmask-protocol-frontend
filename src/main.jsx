@@ -57,6 +57,15 @@ const renderApp = () => {
   }
 };
 
+// Add a fallback timeout to ensure loading screen is removed even if there's an issue
+setTimeout(() => {
+  const loadingScreen = document.getElementById('loading-screen');
+  if (loadingScreen && window.getComputedStyle(loadingScreen).display !== 'none') {
+    console.error("Fallback timeout: Forcing loading screen removal");
+    loadingScreen.style.display = 'none';
+  }
+}, 5000);
+
 // Execute renderApp when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener('DOMContentLoaded', renderApp);
