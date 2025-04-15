@@ -14,10 +14,13 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 
-// Connect to MongoDB
+// Connect to MongoDB with improved error handling
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("Auth Service MongoDB Connected"))
-  .catch(err => console.error("MongoDB Connection Error:", err));
+  .catch(err => {
+    console.error("MongoDB Connection Error:", err);
+    process.exit(1); // Exit with error code to let Docker restart if configured
+  });
 
 // User Schema
 const UserSchema = new mongoose.Schema({
@@ -71,7 +74,7 @@ app.post("/api/auth/register", async (req, res) => {
     // Create JWT
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || "fallback_dev_secret", // Fallback only for development
       { expiresIn: "1d" }
     );
     
@@ -101,7 +104,7 @@ app.post("/api/auth/login", async (req, res) => {
     // Create JWT
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || "fallback_dev_secret", // Fallback only for development
       { expiresIn: "1d" }
     );
     
@@ -121,12 +124,28 @@ app.get("/api/auth/verify", async (req, res) => {
       return res.status(401).json({ msg: "No token, authorization denied" });
     }
     
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_dev_secret");
     res.json(decoded);
   } catch (err) {
     res.status(401).json({ msg: "Token is not valid" });
   }
 });
 
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Auth Service running on port ${PORT}`));
+
+// Handle termination signals properly
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
+  process.exit(0);
+});
