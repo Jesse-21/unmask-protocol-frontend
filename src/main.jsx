@@ -26,10 +26,9 @@ const renderApp = () => {
     // Hide loading screen after rendering
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
-      // Use a slight delay to ensure content is rendered
-      setTimeout(() => {
-        loadingScreen.style.display = 'none';
-      }, 800); // Increased timeout for slower connections
+      console.log("React app rendered, removing loading screen");
+      // Remove loading screen immediately after render
+      loadingScreen.style.display = 'none';
     }
   } catch (error) {
     console.error("Error rendering the application:", error);
@@ -54,7 +53,7 @@ const renderApp = () => {
   }
 };
 
-// Wait for DOM to be ready
+// Execute renderApp when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {

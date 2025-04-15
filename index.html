@@ -55,11 +55,23 @@
         id="loading-logo" 
         src="/unmask-icon.png" 
         alt="Unmask Protocol Logo"
+        onError="this.onerror=null; console.error('Loading logo failed to load'); this.src='/placeholder.svg';"
       />
     </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
+      // Improved loading screen handling with error detection
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            console.log('Window loaded: Removing loading screen');
+            loadingScreen.style.display = 'none';
+          }
+        }, 800); // Slight delay to ensure content is rendered
+      });
+      
       // Fallback to hide loading screen if everything else fails
       setTimeout(function() {
         const loadingScreen = document.getElementById('loading-screen');
