@@ -57,27 +57,40 @@
         alt="Unmask Protocol Logo"
         onError="this.onerror=null; console.error('Loading logo failed to load'); this.src='/placeholder.svg';"
       />
+      <p style="margin-top: 10px; font-size: 14px;">Loading...</p>
     </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
-      // Improved loading screen handling with error detection
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          const loadingScreen = document.getElementById('loading-screen');
-          if (loadingScreen) {
-            console.log('Window loaded: Removing loading screen');
+      // Better coordination between different loading screen removal mechanisms
+      let loadingScreenRemoved = false;
+      
+      function removeLoadingScreen() {
+        if (loadingScreenRemoved) return;
+        
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          console.log('Removing loading screen');
+          loadingScreen.style.opacity = '0';
+          loadingScreen.style.transition = 'opacity 0.3s ease';
+          
+          setTimeout(() => {
             loadingScreen.style.display = 'none';
-          }
-        }, 800); // Slight delay to ensure content is rendered
+            loadingScreenRemoved = true;
+          }, 300);
+        }
+      }
+      
+      // Remove on window load
+      window.addEventListener('load', function() {
+        setTimeout(removeLoadingScreen, 800);
       });
       
-      // Fallback to hide loading screen if everything else fails
+      // Fallback timeout
       setTimeout(function() {
-        const loadingScreen = document.getElementById('loading-screen');
-        if (loadingScreen && loadingScreen.style.display !== 'none') {
+        if (!loadingScreenRemoved) {
           console.log('Maximum timeout: Forcing loading screen removal');
-          loadingScreen.style.display = 'none';
+          removeLoadingScreen();
         }
       }, 5000);
     </script>
