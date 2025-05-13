@@ -13,10 +13,17 @@ const rootElement = document.getElementById("root");
 console.log("Initializing React application...");
 console.log("Node version:", process.versions && process.versions.node ? process.versions.node : "unknown");
 console.log("Environment:", import.meta.env.MODE);
+console.log("Browser:", navigator.userAgent);
+console.log("URL:", window.location.href);
 
 if (rootElement) {
   try {
     console.log("Root element found, attempting to render React app");
+    
+    // Check for potential deployment issues
+    if (window.location.protocol === 'file:') {
+      console.warn("Application running from file:// protocol - this may cause issues with loading resources");
+    }
     
     ReactDOM.createRoot(rootElement).render(
       <ErrorBoundary>

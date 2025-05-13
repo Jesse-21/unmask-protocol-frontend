@@ -127,6 +127,27 @@
           }
         }
       }, true);
+      
+      // Add diagnostics for page load performance
+      console.log('HTML document load start: ' + new Date().toISOString());
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM fully loaded: ' + new Date().toISOString());
+      });
+      
+      // Check if running on a server
+      if (window.location.protocol !== 'file:') {
+        console.log('Running from server: ' + window.location.origin);
+      } else {
+        console.warn('Running from local filesystem');
+      }
+      
+      // Check if shield image loads successfully
+      const shieldImg = document.getElementById('loading-logo');
+      if (shieldImg) {
+        shieldImg.onload = function() {
+          console.log('Shield image loaded successfully');
+        };
+      }
     </script>
     <script type="module" src="./src/main.jsx"></script>
   </body>

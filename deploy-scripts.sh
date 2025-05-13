@@ -21,6 +21,11 @@ if [ -f ".node-version" ]; then
     if command -v nvm &> /dev/null; then
         nvm install $NODE_VERSION || nvm use $NODE_VERSION || echo "Failed to set Node version with nvm"
     fi
+    
+    # Additional diagnostic info
+    echo "After NVM setup, using Node version: $(node -v)"
+    echo "Node path: $(which node)"
+    echo "NPM version: $(npm -v)"
 fi
 
 # Set permissions
@@ -30,9 +35,21 @@ chmod +x ./deploy-scripts.sh
 echo "Installing dependencies..."
 npm install --force
 
+# Check if install succeeded
+if [ $? -ne 0 ]; then
+    echo "ERROR: npm install failed. Check Node.js compatibility"
+    exit 1
+fi
+
 # Build the application with explicit base path for assets
 echo "Building application..."
 npm run build
+
+# Check if build succeeded
+if [ $? -ne 0 ]; then
+    echo "ERROR: build failed. See error messages above."
+    exit 1
+fi
 
 # Create necessary directories if they don't exist
 mkdir -p dist/protection-shield.png
@@ -40,6 +57,8 @@ mkdir -p dist/protection-shield.png
 # Copy static assets to ensure they're available
 echo "Copying static assets..."
 cp -f protection-shield.png dist/protection-shield.png/ || echo "Warning: Failed to copy protection-shield.png"
+echo "Contents of distribution folder:"
+ls -la dist/
 
 # Fix permissions for all files
 echo "Setting permissions..."
