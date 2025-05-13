@@ -9,6 +9,7 @@ import Index from './pages/Index';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import UnauthorizedPage from './pages/UnauthorizedPage';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Lazy load non-critical pages to improve initial load performance
 const RugIdSearchPage = lazy(() => import('./pages/RugIdSearchPage'));
@@ -28,39 +29,6 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Error boundary for route loading failures
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="text-center py-20">
-          <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
-          <button 
-            onClick={() => {
-              this.setState({ hasError: false });
-              window.location.reload();
-            }}
-            className="px-4 py-2 bg-primary text-white rounded"
-          >
-            Try again
-          </button>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-
 function App() {
   return (
     <ErrorBoundary>
@@ -70,115 +38,130 @@ function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={
-                <>
+                <ErrorBoundary>
                   <Header />
                   <Index />
-                </>
+                </ErrorBoundary>
               } />
-              <Route path="/login" element={<LoginPage />} />
+              
+              <Route path="/login" element={
+                <ErrorBoundary>
+                  <LoginPage />
+                </ErrorBoundary>
+              } />
               
               <Route path="/rugid" element={
-                <>
+                <ErrorBoundary>
                   <Header />
                   <Suspense fallback={<LoadingFallback />}>
                     <RugIdSearchPage />
                   </Suspense>
-                </>
+                </ErrorBoundary>
               } />
               
               <Route path="/report" element={
-                <>
+                <ErrorBoundary>
                   <Header />
                   <Suspense fallback={<LoadingFallback />}>
                     <ReportingPage />
                   </Suspense>
-                </>
+                </ErrorBoundary>
               } />
               
               <Route path="/register" element={
-                <>
+                <ErrorBoundary>
                   <Header />
                   <Suspense fallback={<LoadingFallback />}>
                     <ProjectRegistrationPage />
                   </Suspense>
-                </>
+                </ErrorBoundary>
               } />
               
               <Route path="/api" element={
-                <Suspense fallback={<LoadingFallback />}>
-                  <ApiKeyRequestPage />
-                </Suspense>
+                <ErrorBoundary>
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ApiKeyRequestPage />
+                  </Suspense>
+                </ErrorBoundary>
               } />
               
               <Route path="/api-info" element={
-                <>
+                <ErrorBoundary>
                   <Header />
                   <Suspense fallback={<LoadingFallback />}>
                     <ApiInfoPage />
                   </Suspense>
-                </>
+                </ErrorBoundary>
               } />
               
               <Route path="/trust-agreement" element={
-                <Suspense fallback={<LoadingFallback />}>
-                  <TrustAgreementPage />
-                </Suspense>
+                <ErrorBoundary>
+                  <Suspense fallback={<LoadingFallback />}>
+                    <TrustAgreementPage />
+                  </Suspense>
+                </ErrorBoundary>
               } />
               
               <Route path="/unauthorized" element={
-                <>
+                <ErrorBoundary>
                   <Header />
                   <UnauthorizedPage />
-                </>
+                </ErrorBoundary>
               } />
               
               <Route path="/about" element={
-                <>
+                <ErrorBoundary>
                   <Header />
                   <Suspense fallback={<LoadingFallback />}>
                     <AboutPage />
                   </Suspense>
-                </>
+                </ErrorBoundary>
               } />
               
               {/* Protected Admin Route */}
               <Route path="/admin/*" element={
-                <ProtectedRoute requiredRole="admin">
-                  <Suspense fallback={<LoadingFallback />}>
-                    <AdminPanel />
-                  </Suspense>
-                </ProtectedRoute>
+                <ErrorBoundary>
+                  <ProtectedRoute requiredRole="admin">
+                    <Suspense fallback={<LoadingFallback />}>
+                      <AdminPanel />
+                    </Suspense>
+                  </ProtectedRoute>
+                </ErrorBoundary>
               } />
               
               {/* Protected Agent Route */}
               <Route path="/investigations/*" element={
-                <ProtectedRoute requiredRole="agent">
-                  <Suspense fallback={<LoadingFallback />}>
-                    <AgentInvestigationPage />
-                  </Suspense>
-                </ProtectedRoute>
+                <ErrorBoundary>
+                  <ProtectedRoute requiredRole="agent">
+                    <Suspense fallback={<LoadingFallback />}>
+                      <AgentInvestigationPage />
+                    </Suspense>
+                  </ProtectedRoute>
+                </ErrorBoundary>
               } />
               
               {/* Default redirect for authenticated users */}
               <Route path="/auth-redirect" element={
-                <ProtectedRoute>
-                  {({ user }) => {
-                    if (user?.role === 'admin') return <Navigate to="/admin" replace />;
-                    if (user?.role === 'agent') return <Navigate to="/investigations" replace />;
-                    return <Navigate to="/" replace />;
-                  }}
-                </ProtectedRoute>
+                <ErrorBoundary>
+                  <ProtectedRoute>
+                    {({ user }) => {
+                      if (user?.role === 'admin') return <Navigate to="/admin" replace />;
+                      if (user?.role === 'agent') return <Navigate to="/investigations" replace />;
+                      return <Navigate to="/" replace />;
+                    }}
+                  </ProtectedRoute>
+                </ErrorBoundary>
               } />
               
               {/* 404 Route - must be last */}
               <Route path="*" element={
-                <>
+                <ErrorBoundary>
                   <Header />
                   <div className="py-20 text-center">
                     <h1 className="text-3xl font-bold">Page Not Found</h1>
                     <p className="mt-4">The page you are looking for does not exist.</p>
                   </div>
-                </>
+                </ErrorBoundary>
               } />
             </Routes>
           </div>

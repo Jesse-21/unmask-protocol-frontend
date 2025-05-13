@@ -1,29 +1,51 @@
 
 import React from 'react';
 
-const StepCard = ({ number, title, description, icon }) => (
-  <div className="flex gap-4 p-4 rounded-lg border border-blue-500/10 bg-gray-900/40 hover:bg-gray-900/60 transition-all duration-300">
-    <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-800 border border-blue-500/20 overflow-hidden">
-      {icon || (
-        <img 
-          src="/public/unmask-seal.png" 
-          alt="Unmask Seal" 
-          className="h-10 w-10 object-contain"
-          onError={(e) => {
-            console.error("Seal image failed to load:", e);
-            e.target.src = "/public/unmask-icon.png"; // Fallback image
-          }}
-        />
-      )}
-    </div>
-    <div>
-      <div className="flex items-center gap-2 mb-1">
-        <span className="text-xs font-bold text-blue-400 opacity-70">STEP {number}</span>
-        <h3 className="text-lg font-semibold">{title}</h3>
+const StepCard = ({ number, title, description, icon }) => {
+  const handleImageError = (e) => {
+    const originalSrc = e.target.src;
+    console.error(`Image failed to load: ${originalSrc}`);
+    
+    // Try different fallbacks sequentially
+    if (originalSrc.includes('/public/')) {
+      // Try without /public/ prefix
+      const newSrc = originalSrc.replace('/public/', '');
+      console.log(`Trying without /public/ prefix: ${newSrc}`);
+      e.target.src = newSrc;
+    } else if (!originalSrc.startsWith('/')) {
+      // Try with leading slash
+      const newSrc = '/' + originalSrc;
+      console.log(`Trying with leading slash: ${newSrc}`);
+      e.target.src = newSrc;
+    } else {
+      // Last resort fallback
+      console.log("Using universal fallback image");
+      e.target.src = "unmask-icon.png";
+      e.target.onerror = null; // Prevent infinite loop
+    }
+  };
+
+  return (
+    <div className="flex gap-4 p-4 rounded-lg border border-blue-500/10 bg-gray-900/40 hover:bg-gray-900/60 transition-all duration-300">
+      <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-gray-800 border border-blue-500/20 overflow-hidden">
+        {icon || (
+          <img 
+            src="unmask-seal.png" 
+            alt="Unmask Seal" 
+            className="h-10 w-10 object-contain"
+            onError={handleImageError}
+          />
+        )}
       </div>
-      <p className="text-gray-400 text-sm">{description}</p>
+      <div>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-xs font-bold text-blue-400 opacity-70">STEP {number}</span>
+          <h3 className="text-lg font-semibold">{title}</h3>
+        </div>
+        <p className="text-gray-400 text-sm">{description}</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default StepCard;
