@@ -16,12 +16,12 @@ const ShieldSection = () => (
       <div className="w-full md:w-1/3 order-1 md:order-2 flex justify-center">
         <div className="pulse-subtle">
           <img 
-            src="/unmask-icon.png" 
+            src="unmask-icon.png" 
             alt="Protection Shield" 
             className="h-36 w-auto" 
             onError={(e) => {
               console.error("Shield image failed to load:", e);
-              e.target.src = "/unmask-logo-main.png"; // Using a different fallback image
+              e.target.src = "placeholder.svg"; // Fallback without leading slash
             }}
           />
         </div>
