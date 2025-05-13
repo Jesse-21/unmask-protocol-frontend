@@ -16,7 +16,6 @@ if (rootElement) {
   try {
     console.log("Root element found, attempting to render React app");
     
-    // Temporarily disable strict mode for troubleshooting
     ReactDOM.createRoot(rootElement).render(
       <ErrorBoundary>
         <BrowserRouter>
