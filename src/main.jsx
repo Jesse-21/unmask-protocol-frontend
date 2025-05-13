@@ -16,14 +16,13 @@ if (rootElement) {
   try {
     console.log("Root element found, attempting to render React app");
     
+    // Temporarily disable strict mode for troubleshooting
     ReactDOM.createRoot(rootElement).render(
-      <React.StrictMode>
-        <ErrorBoundary>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ErrorBoundary>
-      </React.StrictMode>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ErrorBoundary>
     );
     
     console.log("React successfully rendered");
@@ -31,8 +30,11 @@ if (rootElement) {
     // Remove loading screen when React is ready
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
-      loadingScreen.style.display = 'none';
-      console.log("Loading screen hidden");
+      // Use a short timeout to ensure the app has had time to initialize properly
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+        console.log("Loading screen hidden");
+      }, 500);
     } else {
       console.warn("Loading screen element not found");
     }
@@ -42,7 +44,7 @@ if (rootElement) {
     document.body.innerHTML = `
       <div style="padding: 20px; text-align: center; background-color: #111; color: #f0f0f0; font-family: sans-serif;">
         <h1 style="color: #e74c3c;">Application Error</h1>
-        <p>The application failed to load properly. Please try refreshing the page.</p>
+        <p>The application failed to load properly. Please check the console for details.</p>
         <p style="background: #222; padding: 10px; border-radius: 4px; margin-top: 20px; font-family: monospace; text-align: left;">Error details: ${error.message}</p>
         <button onclick="window.location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
           Reload Page

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import LogoFallback from '../LogoFallback';
 
 const ShieldSection = () => (
   <section className="mb-16 relative">
@@ -16,17 +17,28 @@ const ShieldSection = () => (
       <div className="w-full md:w-1/3 order-1 md:order-2 flex justify-center">
         <div className="pulse-subtle">
           <img 
-            src="protection-shield.png" 
+            src="/unmask-icon.png" 
             alt="Protection Shield" 
             className="h-36 w-auto" 
             onError={(e) => {
-              console.error("Shield image failed to load, trying fallback");
-              e.target.src = "unmask-icon.png";
-              e.target.onerror = (e2) => {
-                console.error("Fallback image also failed to load");
-                e2.target.src = "placeholder.svg";
-                e2.target.onerror = null;
-              };
+              console.error("Shield image failed to load, using fallback component");
+              // Create a container for the fallback
+              const container = document.createElement('div');
+              container.className = "h-36 w-auto";
+              
+              // Get the parent element of the image
+              const parent = e.target.parentElement;
+              
+              // Replace the image with the container
+              if (parent) {
+                parent.replaceChild(container, e.target);
+                
+                // Render the LogoFallback component into the container
+                const fallback = document.createElement('div');
+                fallback.className = "h-full w-full flex items-center justify-center";
+                fallback.innerHTML = '<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-full w-auto"><path d="M100 0C44.8 0 0 44.8 0 100C0 155.2 44.8 200 100 200C155.2 200 200 155.2 200 100C200 44.8 155.2 0 100 0ZM100 180C55.8 180 20 144.2 20 100C20 55.8 55.8 20 100 20C144.2 20 180 55.8 180 100C180 144.2 144.2 180 100 180Z" fill="url(#paint0_linear)"/><path d="M140 80C140 102.1 122.1 120 100 120C77.9 120 60 102.1 60 80C60 57.9 77.9 40 100 40C122.1 40 140 57.9 140 80Z" fill="url(#paint1_linear)"/><path d="M65 125C65 115.1 73.1 107 83 107H117C126.9 107 135 115.1 135 125V155H155V125C155 104.0 138.0 87 117 87H83C62.0 87 45 104.0 45 125V155H65V125Z" fill="url(#paint2_linear)"/><defs><linearGradient id="paint0_linear" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse"><stop stop-color="#3B82F6"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient><linearGradient id="paint1_linear" x1="60" y1="40" x2="140" y2="120" gradientUnits="userSpaceOnUse"><stop stop-color="#3B82F6"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient><linearGradient id="paint2_linear" x1="45" y1="87" x2="155" y2="155" gradientUnits="userSpaceOnUse"><stop stop-color="#3B82F6"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs></svg>';
+                container.appendChild(fallback);
+              }
             }}
           />
         </div>
