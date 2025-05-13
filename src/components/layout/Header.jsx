@@ -7,7 +7,7 @@ import LogoFallback from '../LogoFallback';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [logoLoaded, setLogoLoaded] = useState(true);
+  const [logoLoaded, setLogoLoaded] = useState(false);
   
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -17,21 +17,10 @@ const Header = () => {
     <header className="flex justify-between items-center py-6">
       <div className="flex flex-col items-center">
         <Link to="/" aria-label="Unmask Protocol">
-          {logoLoaded ? (
-            <img 
-              src="/unmask-logo-main.png" 
-              alt="Unmask Protocol Logo" 
-              className="h-24 w-auto object-contain"
-              onError={(e) => {
-                console.error("Header logo failed to load, using fallback");
-                setLogoLoaded(false);
-              }}
-            />
-          ) : (
-            <div className="h-24 w-auto flex items-center justify-center">
-              <LogoFallback className="h-20 w-auto" />
-            </div>
-          )}
+          {/* Always use the LogoFallback by default for consistency */}
+          <div className="h-24 w-auto flex items-center justify-center">
+            <LogoFallback className="h-20 w-auto" />
+          </div>
         </Link>
       </div>
       

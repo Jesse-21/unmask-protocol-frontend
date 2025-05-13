@@ -33,17 +33,23 @@ if (rootElement) {
       setTimeout(() => {
         loadingScreen.style.display = 'none';
         console.log("Loading screen hidden");
-      }, 500);
+      }, 1000); // Increased timeout for more reliability
     } else {
       console.warn("Loading screen element not found");
     }
   } catch (error) {
     console.error("Fatal error rendering React application:", error);
     // Display a more visible error message for users
+    const loadingError = document.getElementById('loading-error');
+    if (loadingError) {
+      loadingError.style.display = 'block';
+      loadingError.textContent = `Error: ${error.message}. Please refresh the page.`;
+    }
+    
     document.body.innerHTML = `
       <div style="padding: 20px; text-align: center; background-color: #111; color: #f0f0f0; font-family: sans-serif;">
         <h1 style="color: #e74c3c;">Application Error</h1>
-        <p>The application failed to load properly. Please check the console for details.</p>
+        <p>The application failed to load properly. Please refresh the page or check your connection.</p>
         <p style="background: #222; padding: 10px; border-radius: 4px; margin-top: 20px; font-family: monospace; text-align: left;">Error details: ${error.message}</p>
         <button onclick="window.location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
           Reload Page

@@ -5,6 +5,8 @@ const react = require("@vitejs/plugin-react");
 
 // https://vitejs.dev/config/
 module.exports = defineConfig({
+  // Use relative base path to ensure assets load correctly in any environment
+  base: './',
   server: {
     host: "::",
     port: "8080",

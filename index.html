@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="dark">
   <head>
@@ -7,8 +8,8 @@
     <meta name="description" content="Unmask Protocol(TM), is an end-to-end privacy focused web3 accountability protocol -- from award winning web3 company,  Rugdox LLC." />
     
     <!-- Multiple favicon formats for better compatibility -->
-    <link rel="icon" type="image/png" href="/unmask-icon.png" />
-    <link rel="apple-touch-icon" href="/unmask-logo-main.png" />
+    <link rel="icon" type="image/png" href="./protection-shield.png" />
+    <link rel="apple-touch-icon" href="./protection-shield.png" />
     
     <style>
       body {
@@ -109,24 +110,18 @@
       window.addEventListener('error', function(e) {
         console.log('Error event:', e);
         
-        if (e.target && e.target.tagName === 'SCRIPT') {
-          console.error('Script loading error:', e);
+        if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'IMG')) {
+          console.error('Resource loading error:', e);
           const loadingScreen = document.getElementById('loading-screen');
           const loadingError = document.getElementById('loading-error');
           
           if (loadingError) {
             loadingError.style.display = 'block';
-            loadingError.textContent = 'Failed to load application scripts. Please check your connection.';
-          }
-          
-          // Keep loading screen visible when scripts fail
-          if (loadingScreen) {
-            loadingScreen.innerHTML += '<button onclick="window.location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Reload Page</button>';
+            loadingError.textContent = 'Failed to load application resources. Please refresh the page.';
           }
         }
       }, true);
     </script>
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="./src/main.jsx"></script>
   </body>
 </html>
