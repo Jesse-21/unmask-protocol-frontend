@@ -71,7 +71,13 @@
   </head>
   <body>
     <div id="loading-screen">
-      <div class="fallback-logo">
+      <img 
+        id="loading-logo" 
+        src="./protection-shield.png" 
+        alt="Loading" 
+        onerror="this.style.display='none';document.querySelector('.fallback-logo').style.display='flex';"
+      />
+      <div class="fallback-logo" style="display: none;">
         <svg 
           width="120" 
           height="120" 

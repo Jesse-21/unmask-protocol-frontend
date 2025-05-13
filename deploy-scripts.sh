@@ -5,6 +5,24 @@
 # Print current directory for debugging
 echo "Current directory: $(pwd)"
 
+# Check node version
+echo "Node version: $(node -v)"
+
+# Export NVM directory if using NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Try to use the correct node version
+if [ -f ".node-version" ]; then
+    NODE_VERSION=$(cat .node-version)
+    echo "Using Node.js version from .node-version: $NODE_VERSION"
+    
+    # Check if the version is available with nvm
+    if command -v nvm &> /dev/null; then
+        nvm install $NODE_VERSION || nvm use $NODE_VERSION || echo "Failed to set Node version with nvm"
+    fi
+fi
+
 # Set permissions
 chmod +x ./deploy-scripts.sh
 
@@ -38,5 +56,5 @@ echo "If you encounter issues with image loading:"
 echo "1. Check that protection-shield.png exists in your root directory"
 echo "2. Confirm that your server has correct MIME types configured"
 echo "3. Review server logs for 404 or 500 errors"
+echo "4. If you're still having issues, try adding 'console.log' statements to debug"
 echo "=============================="
-

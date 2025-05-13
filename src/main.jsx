@@ -11,6 +11,8 @@ const rootElement = document.getElementById("root");
 
 // Add detailed console logging to track initialization
 console.log("Initializing React application...");
+console.log("Node version:", process.versions && process.versions.node ? process.versions.node : "unknown");
+console.log("Environment:", import.meta.env.MODE);
 
 if (rootElement) {
   try {
@@ -49,7 +51,7 @@ if (rootElement) {
     document.body.innerHTML = `
       <div style="padding: 20px; text-align: center; background-color: #111; color: #f0f0f0; font-family: sans-serif;">
         <h1 style="color: #e74c3c;">Application Error</h1>
-        <p>The application failed to load properly. Please refresh the page or check your connection.</p>
+        <p>The application failed to load properly. This might be due to Node.js version incompatibility (current: ${process.versions && process.versions.node ? process.versions.node : "unknown"}).</p>
         <p style="background: #222; padding: 10px; border-radius: 4px; margin-top: 20px; font-family: monospace; text-align: left;">Error details: ${error.message}</p>
         <button onclick="window.location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
           Reload Page
